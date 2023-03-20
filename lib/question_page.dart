@@ -20,7 +20,6 @@ class QuestionPage extends StatefulWidget {
 class QuestionPageState extends State<QuestionPage> {
   @override
   Widget build(BuildContext context) {
-
     List<Question> questions = Questions.questions;
 
     int questionNumber = Randoms.getRandomIntFromTo(0, questions.length - 1);
@@ -34,16 +33,17 @@ class QuestionPageState extends State<QuestionPage> {
         (firstChoice == questionNumber) ? falseChoice : questionNumber;
 
     void showResult(bool correctedAnswer) {
-      if (correctedAnswer) {
-        Navigator.of(context).pushReplacementNamed(
-          ResultPage.routePage,
-          arguments: ResultData(correctedAnswer),
-        );
-      } else {
-        Navigator.of(context).pushNamed(
-          ResultPage.routePage,
-          arguments: ResultData(correctedAnswer),
-        );
+      Navigator.of(context).pushNamed(
+        ResultPage.routePage,
+        arguments: ResultData(correctedAnswer),
+      );
+    }
+
+    void _showNextTrue() {
+      try {
+        setState(() {});
+      } catch (e) {
+        print('error is: $e');
       }
     }
 
@@ -67,6 +67,10 @@ class QuestionPageState extends State<QuestionPage> {
                     onTap: () {
                       if (firstChoice == questionNumber) {
                         showResult(true);
+                        Future.delayed(
+                          const Duration(milliseconds: 500),
+                          _showNextTrue,
+                        );
                       } else {
                         showResult(false);
                       }
@@ -80,6 +84,10 @@ class QuestionPageState extends State<QuestionPage> {
                     onTap: () {
                       if (secondChoice == questionNumber) {
                         showResult(true);
+                        Future.delayed(
+                          const Duration(milliseconds: 500),
+                          _showNextTrue,
+                        );
                       } else {
                         showResult(false);
                       }
